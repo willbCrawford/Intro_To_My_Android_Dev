@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context=".TicTacToeGameActivity">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineVert1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineVert2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.67" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineVert3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineHoriz1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineHoriz2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.60" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineHoriz3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/buttonTopCenter"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHoriz1"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVert2"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVert1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/buttonTopLeft"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHoriz1"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVert1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/buttonTopRight"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHoriz1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVert2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonCenter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHoriz2"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVert2"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVert1"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHoriz1" />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/buttonMiddleRight"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHoriz2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVert2"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHoriz1" />
+
+    <Button
+        android:id="@+id/buttonMiddleLeft"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHoriz2"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVert1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHoriz1" />
+
+    <Button
+        android:id="@+id/buttonBotCenter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHoriz3"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVert2"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVert1"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHoriz2" />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/buttonBotLeft"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHoriz3"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVert1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHoriz2" />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/buttonBotRight"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHoriz3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVert2"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHoriz2" />
+
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVert3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guidelineHoriz3"
+        />
+
+    <Button
+        android:id="@+id/playerMove"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/playerOneTurn"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVert3"
+        app:layout_constraintTop_toTopOf="@id/guidelineHoriz3" />
+
+</android.support.constraint.ConstraintLayout>
