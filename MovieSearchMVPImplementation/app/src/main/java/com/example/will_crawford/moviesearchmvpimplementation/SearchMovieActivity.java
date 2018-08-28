@@ -1,9 +1,7 @@
 package com.example.will_crawford.moviesearchmvpimplementation;
 
-import android.content.Context;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,17 +12,17 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.List;
 
-public class SearchMovieActivity extends AppCompatActivity implements MovieView {
+public class SearchMovieActivity extends AppCompatActivity implements SearchMovieView {
 
     TextInputEditText searchBar;
     private MoviesAdapter mAdapter;
     private List<Movie> movies;
-    private PresenterImpl presenter;
+    private SearchMoviePresenterImpl presenter;
+
+    public static final String EXTRA_MESSAGE = "com.example.will_crawford.moviesearchmvpimplementation.MOVIE_TITLE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +34,7 @@ public class SearchMovieActivity extends AppCompatActivity implements MovieView 
 
         final Button searchButton = findViewById(R.id.search_button);
 
-        presenter = new PresenterImpl(this);
+        presenter = new SearchMoviePresenterImpl(this);
 
         searchBar = findViewById(R.id.search_bar);
 
@@ -45,23 +43,20 @@ public class SearchMovieActivity extends AppCompatActivity implements MovieView 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        searchButton.setOnClickListener(new View.OnClickListener(){
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String message = searchBar.getText().toString();
 
-                if(!message.equals("")) {
-                    presenter.getMovie(message);
-                    movies = presenter.getMovies();
-                }
+                presenter.getMovie(message);
                 hideKeyboard(v);
             }
         });
 
-        searchBar.setOnKeyListener(new View.OnKeyListener(){
+        searchBar.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     searchButton.callOnClick();
                     return true;
                 }
@@ -72,8 +67,13 @@ public class SearchMovieActivity extends AppCompatActivity implements MovieView 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Movie movie = movies.get(position);
-                Toast.makeText(SearchMovieActivity.this, movie.getTitle() + " is selected", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(SearchMovieActivity.this, DisplayMovieActivity.class);
+
+                intent.putExtra(EXTRA_MESSAGE, movies.get(position).getTitle());
+
+                startActivity(intent);
+
             }
 
             @Override
@@ -89,13 +89,14 @@ public class SearchMovieActivity extends AppCompatActivity implements MovieView 
     }
 
     private void hideKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         assert imm != null;
-        imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     @Override
     public void updateMovie(List<Movie> movies) {
         mAdapter.setMovies(movies);
+        this.movies = movies;
     }
 }

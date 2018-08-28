@@ -8,12 +8,8 @@ class MyReviewHolder extends RecyclerView.ViewHolder{
     public TextView reviewSource, reviewPercent;
 
     public MyReviewHolder(View itemView){
-
         super(itemView);
-
         reviewSource = itemView.findViewById(R.id.review_source);
-
         reviewPercent = itemView.findViewById(R.id.review_percent);
-
     }
 }

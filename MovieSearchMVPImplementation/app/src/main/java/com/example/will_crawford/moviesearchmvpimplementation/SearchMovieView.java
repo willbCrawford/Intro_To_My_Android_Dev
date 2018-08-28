@@ -4,7 +4,7 @@ import android.view.View;
 
 import java.util.List;
 
-public interface MovieView {
+public interface SearchMovieView {
 
     public void updateMovie(List<Movie> movies);
 }

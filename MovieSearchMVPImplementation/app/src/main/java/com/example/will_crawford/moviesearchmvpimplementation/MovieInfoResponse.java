@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-class IMDbResponse {
+class MovieInfoResponse {
 
     @SerializedName("Title")
     private String title;
@@ -13,7 +13,7 @@ class IMDbResponse {
     @SerializedName("Year")
     private String year;
 
-    @SerializedName("Release")
+    @SerializedName("Released")
     private String releaseDate;
 
     @SerializedName("Ratings")
@@ -47,13 +47,10 @@ class IMDbResponse {
     }
 
     public List<Review> getReviews() {
-
         if (reviews != null)
             return reviews;
-
         else
-            return new ArrayList<Review>();
-
+            return new ArrayList<>();
     }
 
     public void setReviews(List<Review> reviews) {

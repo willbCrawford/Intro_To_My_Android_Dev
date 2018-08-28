@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IMDbAdapter extends RecyclerView.Adapter<MyReviewHolder> {
+public class MovieInfoAdapter extends RecyclerView.Adapter<MyReviewHolder> {
 
     private List<Review> reviews;
 
-    public IMDbAdapter() {
+    MovieInfoAdapter() {
         reviews = new ArrayList<Review>();
     }
 
@@ -21,19 +21,14 @@ public class IMDbAdapter extends RecyclerView.Adapter<MyReviewHolder> {
     @Override
     public MyReviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_review, parent, false);
-
         return new MyReviewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyReviewHolder holder, int position) {
-
         Review review = reviews.get(position);
-
         holder.reviewSource.setText(review.source);
-
         holder.reviewPercent.setText(review.rating);
-
     }
 
     @Override

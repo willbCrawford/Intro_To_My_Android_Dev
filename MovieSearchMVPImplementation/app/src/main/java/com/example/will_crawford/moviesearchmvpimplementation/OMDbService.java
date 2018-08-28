@@ -9,13 +9,13 @@ public interface OMDbService {
     String BASE_URL = "http://www.omdbapi.com";
 
     @GET("/?apiKey=bbbd7c62")
-    Call<MovieResponse> getMovie(
+    Call<MoviesResponse> getMovie(
             @Query("s") String movieTitle
     );
 
     @GET("/?apiKey=bbbd7c62")
-    Call<MovieResponse> getIMDbInfo(
-            @Query("t") String imdbInfo
+    Call<MovieInfoResponse> getIMDbInfo(
+            @Query("t") String movieTitle
     );
 
 }

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoviesAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class MoviesAdapter extends RecyclerView.Adapter<MovieHolder> {
 
     private List<Movie> movies;
 
@@ -19,13 +19,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_movie, parent, false);
-        return new MyViewHolder(itemView);
+        return new MovieHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
         Movie movie = movies.get(position);
         holder.title.setText(movie.getTitle());
         holder.year.setText((movie.getYear()));
@@ -33,10 +33,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public int getItemCount() {
-        if (movies == null)
-            return 0;
-        else
-            return movies.size();
+        return movies.size();
     }
 
     public void setMovies(List<Movie> movies) {
