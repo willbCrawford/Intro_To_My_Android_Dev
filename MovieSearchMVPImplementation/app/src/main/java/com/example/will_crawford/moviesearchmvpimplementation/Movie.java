@@ -10,11 +10,18 @@ public class Movie {
     @SerializedName("Year")
     private String year;
 
+    @SerializedName("imdbID")
+    private String id;
+
     public String getTitle() {
         return title;
     }
 
     public String getYear() {
         return year;
+    }
+
+    public String getId() {
+        return id;
     }
 }

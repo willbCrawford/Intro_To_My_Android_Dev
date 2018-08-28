@@ -15,7 +15,7 @@ public interface OMDbService {
 
     @GET("/?apiKey=bbbd7c62")
     Call<MovieInfoResponse> getIMDbInfo(
-            @Query("t") String movieTitle
+            @Query("i") String imdbID
     );
 
 }

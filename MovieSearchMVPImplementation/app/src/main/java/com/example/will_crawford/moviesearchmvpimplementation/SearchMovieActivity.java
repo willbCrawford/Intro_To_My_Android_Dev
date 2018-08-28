@@ -67,24 +67,15 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
                 Intent intent = new Intent(SearchMovieActivity.this, DisplayMovieActivity.class);
-
-                intent.putExtra(EXTRA_MESSAGE, movies.get(position).getTitle());
-
+                intent.putExtra(EXTRA_MESSAGE, movies.get(position).getId());
                 startActivity(intent);
-
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                new AlertDialog.Builder(SearchMovieActivity.this)
-                        .setTitle(movies.get(position).getTitle())
-                        .setMessage(movies.get(position).getYear())
-                        .setPositiveButton("Dimiss", null)
-                        .create()
-                        .show();
             }
+
         }));
     }
 
