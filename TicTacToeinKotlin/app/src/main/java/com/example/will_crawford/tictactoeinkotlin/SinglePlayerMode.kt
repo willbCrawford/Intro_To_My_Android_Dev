@@ -2,10 +2,11 @@ package com.example.will_crawford.tictactoeinkotlin
 
 import android.widget.Button
 import java.util.*
+import kotlin.collections.ArrayList
 
 class SinglePlayerMode(playerOneTurn : Boolean, playerButton : Button, playerOneColor : Int, playerTwoColor : Int, playerOneButtonBackgroundColor: Int, playerTwoButtonBackGroundColor: Int, gameBoard : ArrayList<ArrayList<Button>>) : GeneralMode(playerOneTurn, playerButton, playerOneColor, playerTwoColor, playerOneButtonBackgroundColor, playerTwoButtonBackGroundColor) {
 
-    lateinit var availablePosition : ArrayList<Button>
+    var availablePosition = ArrayList<Button>()
 
     init{
 

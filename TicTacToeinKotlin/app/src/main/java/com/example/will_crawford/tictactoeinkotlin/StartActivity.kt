@@ -33,5 +33,7 @@ class StartActivity : AppCompatActivity(), View.OnClickListener {
         intent.putExtra(EXTRA_MESSAGE, gameMode)
 
         startActivity(intent)
+
     }
+
 }

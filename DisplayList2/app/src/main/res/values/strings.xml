@@ -5,4 +5,5 @@
     <string name="title_activity_search_movie">SearchMovieActivity</string>
     <string name="search_button">Search Movie</string>
     <string name="search_bar">Enter Movie Title</string>
+    <string name="title_activity_display__movie">Display_MovieActivity</string>
 </resources>

@@ -78,9 +78,10 @@ class TicTacToeGameActivity : AppCompatActivity(), View.OnClickListener {
         buttonBotRight.setOnClickListener(this)
 
         val resetButton = findViewById<Button>(R.id.reset_button)
+
         playerButton = findViewById(R.id.playerMove)
 
-        if(intent.getStringExtra(EXTRA_MESSAGE) == "Two Player"){
+        if(intent.getIntExtra(EXTRA_MESSAGE, R.string.twoPlayerMode) == R.string.twoPlayerMode){
 
             gameMode = TwoPlayerMode(playerOneTurn, playerButton,
                     resources.getColor(android.R.color.holo_orange_light), resources.getColor(android.R.color.holo_blue_light),
@@ -95,15 +96,6 @@ class TicTacToeGameActivity : AppCompatActivity(), View.OnClickListener {
                     gameBoard )
 
         }
-//        if(playerOneTurn){
-//
-//            playerButton.setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
-//
-//        } else {
-//
-//            playerButton.setBackgroundColor(resources.getColor(android.R.color.holo_blue_dark))
-//
-//        }
 
         resetButton.setOnClickListener {
             resetBoard()
@@ -129,13 +121,13 @@ class TicTacToeGameActivity : AppCompatActivity(), View.OnClickListener {
 
         }
 
-        playerOneMoves = 0
-        playerTwoMoves = 0
-        playerOneTurn = true
+        gameMode.playerOneMoves = 0
+        gameMode.playerTwoMoves = 0
+        gameMode.playerOneTurn = true
 
     }
 
-    override fun onClick(v: View?) {
+    override fun onClick(v: View) {
 
         if(checkForAvailableSpace(v as Button)){
 
@@ -149,25 +141,25 @@ class TicTacToeGameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun checkForAvailableSpace(button: Button): Boolean {
 
-        return button.background.equals(getResources().getColor(android.R.color.black))
+        return button.background.equals( resources.getColor( android.R.color.black ) )
 
     }
 
     private fun checkWinConditions() {
 
-        if (playerOneMoves >= 3) {
+        if (gameMode.playerOneMoves >= 3) {
 
             checkGameForWin(PlayerOne)
 
         }
 
-        if (playerTwoMoves >= 3) {
+        if (gameMode.playerTwoMoves >= 3) {
 
             checkGameForWin(PlayerTwo)
 
         }
 
-        if (playerOneMoves + playerTwoMoves >= MaxNUmberOfMoves) {
+        if (gameMode.playerOneMoves + gameMode.playerTwoMoves >= MaxNUmberOfMoves) {
 
             displayTie()
 

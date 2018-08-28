@@ -10,20 +10,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     private List<Movie> movies;
     private RecyclerView recyclerView;
     private  MoviesAdapter mAdapter;
+    private Retrofit retrofitClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +55,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        getMovie(getIntent().getStringExtra(SearchMovieActivity.EXTRA_MESSAGE));
-
+        retrofitClient = RetrofitSingleton.getRetrofit();
     }
     private void getMovie(String searchKey) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(OMDbService.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        OMDbService Api = retrofit.create(OMDbService.class);
+        OMDbService Api = retrofitClient.create(OMDbService.class);
 
         Call<MovieResponse> call = Api.getMovie(searchKey);
 
@@ -82,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("Test", t.getMessage());
+                Log.d("Call Failed: ", t.getMessage());
             }
         });
     }
