@@ -12,16 +12,25 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MovieHolder> {
 
     private List<Movie> movies;
+    public RecyclerTouchListener recyclerTouchListener;
 
-    public MoviesAdapter() {
-        this.movies = new ArrayList<Movie>();
+    public MoviesAdapter(RecyclerTouchListener recyclerTouchListener) {
+        this.movies = new ArrayList<>();
+        this.recyclerTouchListener = recyclerTouchListener;
     }
 
     @NonNull
     @Override
     public MovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_movie, parent, false);
-        return new MovieHolder(itemView);
+        final MovieHolder movieHolder = new MovieHolder(itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerTouchListener.onMovieClicked(movies.get(movieHolder.getPosition()));
+            }
+        });
+        return movieHolder;
     }
 
     @Override

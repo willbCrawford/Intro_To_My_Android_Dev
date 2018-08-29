@@ -14,6 +14,10 @@ public class DisplayMovieActivity extends AppCompatActivity implements DisplayMo
     private RecyclerView recyclerView;
     private MovieInfoAdapter movieInfoAdapter;
     private DisplayMoviePresenterImpl presenter;
+    TextView movieTitle;
+    TextView movieYear;
+    TextView movieReleaseDate;
+    TextView moviePlot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,23 +29,23 @@ public class DisplayMovieActivity extends AppCompatActivity implements DisplayMo
         recyclerView = findViewById(R.id.recycler_view_for_reviews);
         movieInfoAdapter = new MovieInfoAdapter();
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(movieInfoAdapter);
 
         presenter.getIMDbInfo(getIntent().getStringExtra(SearchMovieActivity.EXTRA_MESSAGE));
+
+        movieTitle = findViewById(R.id.display_movie_title);
+        movieYear = findViewById(R.id.display_movie_year);
+        movieReleaseDate = findViewById(R.id.display_movie_release_date);
+        moviePlot = findViewById(R.id.plot);
     }
 
     @Override
     public void updateMovieInfo(MovieInfoResponse movieInfoResponse, List<Review> reviews) {
-        TextView movieTitle = findViewById(R.id.display_movie_title);
         movieTitle.setText(movieInfoResponse.getTitle());
-        TextView movieYear = findViewById(R.id.display_movie_year);
         movieYear.setText(movieInfoResponse.getYear());
-        TextView movieReleaseDate = findViewById(R.id.display_movie_release_date);
         movieReleaseDate.setText(movieInfoResponse.getReleaseDate());
-        TextView moviePlot = findViewById(R.id.plot);
         moviePlot.setText(movieInfoResponse.getPlot());
 
         movieInfoAdapter.setReviews(reviews);

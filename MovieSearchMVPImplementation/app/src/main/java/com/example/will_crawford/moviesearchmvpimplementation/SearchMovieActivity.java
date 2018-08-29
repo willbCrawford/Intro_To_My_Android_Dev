@@ -16,7 +16,7 @@ import android.widget.Button;
 
 import java.util.List;
 
-public class SearchMovieActivity extends AppCompatActivity implements SearchMovieView {
+public class SearchMovieActivity extends AppCompatActivity implements SearchMovieView, RecyclerTouchListener {
 
     TextInputEditText searchBar;
     private MoviesAdapter mAdapter;
@@ -31,12 +31,11 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
         setContentView(R.layout.activity_search_movie);
 
         final RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        mAdapter = new MoviesAdapter();
+
+        mAdapter = new MoviesAdapter(this);
 
         final Button searchButton = findViewById(R.id.search_button);
-
         presenter = new SearchMoviePresenterImpl(this);
-
         searchBar = findViewById(R.id.search_bar);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -48,7 +47,6 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
             @Override
             public void onClick(View v) {
                 String message = searchBar.getText().toString();
-
                 presenter.getMovie(message);
                 hideKeyboard(v);
             }
@@ -64,20 +62,6 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
                 return false;
             }
         });
-
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Intent intent = new Intent(SearchMovieActivity.this, DisplayMovieActivity.class);
-                intent.putExtra(EXTRA_MESSAGE, movies.get(position).getId());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-            }
-
-        }));
     }
 
     private void hideKeyboard(View v) {
@@ -103,5 +87,12 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
                     }
                 })
                 .create().show();
+    }
+
+    @Override
+    public void onMovieClicked(Movie movie) {
+        Intent intent = new Intent(SearchMovieActivity.this, DisplayMovieActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, movie.getId());
+        startActivity(intent);
     }
 }
