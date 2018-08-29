@@ -1,5 +1,6 @@
 package com.example.will_crawford.moviesearchmvpimplementation;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -89,5 +90,18 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
     public void updateMovie(List<Movie> movies) {
         mAdapter.setMovies(movies);
         this.movies = movies;
+    }
+
+    @Override
+    public void notValidSearch(String searchKey) {
+        new AlertDialog.Builder(SearchMovieActivity.this)
+                .setMessage("Your search is not valid!")
+                .setPositiveButton("clear search", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        searchBar.getText().clear();
+                    }
+                })
+                .create().show();
     }
 }

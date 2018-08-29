@@ -20,24 +20,41 @@ public class SearchMoviePresenterImpl implements SearchMoviePresenter {
 
     @Override
     public void getMovie(String searchKey) {
-        OMDbService omDbService = RetrofitClient.getInstance().getMovieService();
-        Call<MoviesResponse> call = omDbService.getMovie(searchKey);
 
-        call.enqueue(new Callback<MoviesResponse>() {
+        if (isSearchKeyValid(searchKey)) {
 
-            @Override
-            public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
-                MoviesResponse moviesResponse = response.body();
-                if (response.isSuccessful() && moviesResponse != null) {
-                    movies = moviesResponse.getMovies();
-                    searchMovieView.updateMovie(movies);
+            OMDbService omDbService = RetrofitClient.getInstance().getMovieService();
+            Call<MoviesResponse> call = omDbService.getMovie(searchKey);
+
+            call.enqueue(new Callback<MoviesResponse>() {
+
+                @Override
+                public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
+                    MoviesResponse moviesResponse = response.body();
+                    if (response.isSuccessful() && moviesResponse != null) {
+                        movies = moviesResponse.getMovies();
+                        searchMovieView.updateMovie(movies);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<MoviesResponse> call, @NonNull Throwable t) {
-                Log.d("Call Failed: ", t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<MoviesResponse> call, @NonNull Throwable t) {
+                    Log.d("Call Failed: ", t.getMessage());
+                }
+            });
+
+        } else {
+
+            showSearchKeyNotValid(searchKey);
+
+        }
+    }
+
+    public boolean isSearchKeyValid(String searchKey){
+        return !searchKey.contains(" ");
+    }
+
+    public void showSearchKeyNotValid(String searchKey){
+        searchMovieView.notValidSearch(searchKey);
     }
 }
