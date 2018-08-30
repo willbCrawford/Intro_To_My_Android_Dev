@@ -12,9 +12,9 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MovieHolder> {
 
     private List<Movie> movies;
-    public RecyclerTouchListener recyclerTouchListener;
+    private RecyclerTouchListener recyclerTouchListener;
 
-    public MoviesAdapter(RecyclerTouchListener recyclerTouchListener) {
+    MoviesAdapter(RecyclerTouchListener recyclerTouchListener) {
         this.movies = new ArrayList<>();
         this.recyclerTouchListener = recyclerTouchListener;
     }
@@ -23,14 +23,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieHolder> {
     @Override
     public MovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_movie, parent, false);
-        final MovieHolder movieHolder = new MovieHolder(itemView);
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerTouchListener.onMovieClicked(movies.get(movieHolder.getPosition()));
-            }
-        });
-        return movieHolder;
+        return new MovieHolder(itemView);
     }
 
     @Override
@@ -38,6 +31,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieHolder> {
         Movie movie = movies.get(position);
         holder.title.setText(movie.getTitle());
         holder.year.setText((movie.getYear()));
+
+        holder.onClick(movies.get(position), recyclerTouchListener);
     }
 
     @Override

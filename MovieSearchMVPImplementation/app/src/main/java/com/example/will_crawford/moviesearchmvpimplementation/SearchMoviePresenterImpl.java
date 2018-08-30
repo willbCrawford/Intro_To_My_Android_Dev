@@ -15,7 +15,7 @@ public class SearchMoviePresenterImpl implements SearchMoviePresenter {
 
     private List<Movie> movies;
     private SearchMovieView searchMovieView;
-    private Pattern patternForValidSearches = Pattern.compile("[a-z0-9]", Pattern.CASE_INSENSITIVE);
+    private Pattern patternForValidSearches = Pattern.compile("[^a-z]", Pattern.CASE_INSENSITIVE);
 
 
     SearchMoviePresenterImpl(SearchMovieView searchMovieView){
@@ -25,8 +25,8 @@ public class SearchMoviePresenterImpl implements SearchMoviePresenter {
     @Override
     public void getMovie(String searchKey) {
 
-        if (!isSearchKeyValid(searchKey)) {
-            showSearchKeyNotValid(searchKey);
+        if (isSearchKeyValid(searchKey)) {
+            showSearchKeyNotValid();
         }
         else {
             OMDbService omDbService = RetrofitClient.getInstance().getMovieService();
@@ -56,7 +56,7 @@ public class SearchMoviePresenterImpl implements SearchMoviePresenter {
         return matcherForValidSearches.find();
     }
 
-    private void showSearchKeyNotValid(String searchKey){
-        searchMovieView.notValidSearch(searchKey);
+    private void showSearchKeyNotValid(){
+        searchMovieView.notValidSearch();
     }
 }

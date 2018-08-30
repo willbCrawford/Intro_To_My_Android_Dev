@@ -8,5 +8,5 @@ public interface SearchMovieView {
 
     void updateMovie(List<Movie> movies);
 
-    void notValidSearch(String searchKey);
+    void notValidSearch();
 }

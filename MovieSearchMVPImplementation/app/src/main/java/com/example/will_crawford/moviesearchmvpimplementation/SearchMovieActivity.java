@@ -46,8 +46,10 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = searchBar.getText().toString();
-                presenter.getMovie(message);
+                if (searchButton.getText().toString().equals("")){
+                    String message = searchBar.getText().toString();
+                    presenter.getMovie(message);
+                }
                 hideKeyboard(v);
             }
         });
@@ -77,10 +79,10 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
     }
 
     @Override
-    public void notValidSearch(String searchKey) {
+    public void notValidSearch() {
         new AlertDialog.Builder(SearchMovieActivity.this)
                 .setTitle("Your search is not valid!")
-                .setMessage("Please only use alphanumeric characters")
+                .setMessage("Please only use alphabetic characters!")
                 .setNegativeButton("clear search", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
