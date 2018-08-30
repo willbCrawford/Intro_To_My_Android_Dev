@@ -79,8 +79,9 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
     @Override
     public void notValidSearch(String searchKey) {
         new AlertDialog.Builder(SearchMovieActivity.this)
-                .setMessage("Your search is not valid!")
-                .setPositiveButton("clear search", new DialogInterface.OnClickListener() {
+                .setTitle("Your search is not valid!")
+                .setMessage("Please only use alphanumeric characters")
+                .setNegativeButton("clear search", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         searchBar.getText().clear();

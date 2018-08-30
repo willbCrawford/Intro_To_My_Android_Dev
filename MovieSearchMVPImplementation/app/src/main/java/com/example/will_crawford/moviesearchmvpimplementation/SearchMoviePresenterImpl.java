@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,6 +15,8 @@ public class SearchMoviePresenterImpl implements SearchMoviePresenter {
 
     private List<Movie> movies;
     private SearchMovieView searchMovieView;
+    private Pattern patternForValidSearches = Pattern.compile("[a-z0-9]", Pattern.CASE_INSENSITIVE);
+
 
     SearchMoviePresenterImpl(SearchMovieView searchMovieView){
         this.searchMovieView = searchMovieView;
@@ -21,8 +25,10 @@ public class SearchMoviePresenterImpl implements SearchMoviePresenter {
     @Override
     public void getMovie(String searchKey) {
 
-        if (isSearchKeyValid(searchKey)) {
-
+        if (!isSearchKeyValid(searchKey)) {
+            showSearchKeyNotValid(searchKey);
+        }
+        else {
             OMDbService omDbService = RetrofitClient.getInstance().getMovieService();
             Call<MoviesResponse> call = omDbService.getMovie(searchKey);
 
@@ -42,19 +48,15 @@ public class SearchMoviePresenterImpl implements SearchMoviePresenter {
                     Log.d("Call Failed: ", t.getMessage());
                 }
             });
-
-        } else {
-
-            showSearchKeyNotValid(searchKey);
-
         }
     }
 
-    public boolean isSearchKeyValid(String searchKey){
-        return !searchKey.contains(" ");
+    private boolean isSearchKeyValid(String searchKey) {
+        Matcher matcherForValidSearches = patternForValidSearches.matcher(searchKey);
+        return matcherForValidSearches.find();
     }
 
-    public void showSearchKeyNotValid(String searchKey){
+    private void showSearchKeyNotValid(String searchKey){
         searchMovieView.notValidSearch(searchKey);
     }
 }

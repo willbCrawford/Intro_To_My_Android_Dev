@@ -17,5 +17,4 @@ public interface OMDbService {
     Call<MovieInfoResponse> getIMDbInfo(
             @Query("i") String imdbID
     );
-
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SearchMovieView {
 
-    public void updateMovie(List<Movie> movies);
+    void updateMovie(List<Movie> movies);
 
-    public void notValidSearch(String searchKey);
+    void notValidSearch(String searchKey);
 }
