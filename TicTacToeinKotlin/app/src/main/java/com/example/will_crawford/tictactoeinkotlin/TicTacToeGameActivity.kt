@@ -1,6 +1,11 @@
 package com.example.will_crawford.tictactoeinkotlin
 
+import android.content.DialogInterface
+import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.net.sip.SipSession
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -12,15 +17,12 @@ import kotlin.collections.ArrayList
 const val MaxNUmberOfMoves = 9
 const val PlayerOne = android.R.color.holo_orange_light
 const val PlayerTwo = android.R.color.holo_blue_light
+const val PlayerOneButton = android.R.color.holo_orange_dark
+const val PlayerTwoButton = android.R.color.holo_blue_dark
 
 class TicTacToeGameActivity : AppCompatActivity(), View.OnClickListener {
 
     var playerOneTurn :  Boolean = Random().nextBoolean()
-
-    var playerOneMoves : Int = 0
-    var playerTwoMoves : Int = 0
-
-    lateinit var gameMode : GeneralMode
 
     private val topRow : ArrayList<Button> = ArrayList<Button>()
     private val middleRow : ArrayList<Button> = ArrayList<Button>()
@@ -28,6 +30,7 @@ class TicTacToeGameActivity : AppCompatActivity(), View.OnClickListener {
 
     val gameBoard : ArrayList<ArrayList<Button>> = ArrayList<ArrayList<Button>>()
     lateinit var playerButton : Button
+    lateinit var presenterImpl: PresenterImpl
     //private var gameMode : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,19 +42,23 @@ class TicTacToeGameActivity : AppCompatActivity(), View.OnClickListener {
         val buttonTopCenter = findViewById<Button>(R.id.buttonTopCenter)
         val buttonTopRight = findViewById<Button>(R.id.buttonTopRight)
 
+        buttonTopLeft.setOnClickListener(this)
+        buttonTopCenter.setOnClickListener(this)
+        buttonTopRight.setOnClickListener(this)
+
         topRow.add(buttonTopLeft)
         topRow.add(buttonTopCenter)
         topRow.add(buttonTopRight)
 
         gameBoard.add(topRow)
 
-        buttonTopLeft.setOnClickListener(this)
-        buttonTopCenter.setOnClickListener(this)
-        buttonTopRight.setOnClickListener(this)
-
-        val buttonMiddleLeft = findViewById<Button>(R.id.buttonMiddleLeft)
+        val buttonMiddleLeft : Button = findViewById<Button>(R.id.buttonMiddleLeft)
         val buttonCenter = findViewById<Button>(R.id.buttonCenter)
         val buttonMiddleRight = findViewById<Button>(R.id.buttonMiddleRight)
+
+        buttonMiddleLeft.setOnClickListener(this)
+        buttonCenter.setOnClickListener(this)
+        buttonMiddleRight.setOnClickListener(this)
 
         middleRow.add(buttonMiddleLeft)
         middleRow.add(buttonCenter)
@@ -59,13 +66,13 @@ class TicTacToeGameActivity : AppCompatActivity(), View.OnClickListener {
 
         gameBoard.add(middleRow)
 
-        buttonMiddleLeft.setOnClickListener(this)
-        buttonCenter.setOnClickListener(this)
-        buttonMiddleRight.setOnClickListener(this)
-
         val buttonBotLeft = findViewById<Button>(R.id.buttonBotLeft)
         val buttonBotCenter = findViewById<Button>(R.id.buttonBotCenter)
         val buttonBotRight = findViewById<Button>(R.id.buttonBotRight)
+
+        buttonBotLeft.setOnClickListener(this)
+        buttonBotCenter.setOnClickListener(this)
+        buttonBotRight.setOnClickListener(this)
 
         bottomRow.add(buttonBotLeft)
         bottomRow.add(buttonBotCenter)
@@ -73,261 +80,55 @@ class TicTacToeGameActivity : AppCompatActivity(), View.OnClickListener {
 
         gameBoard.add(bottomRow)
 
-        buttonBotLeft.setOnClickListener(this)
-        buttonBotCenter.setOnClickListener(this)
-        buttonBotRight.setOnClickListener(this)
-
         val resetButton = findViewById<Button>(R.id.reset_button)
+        resetButton.setOnClickListener {
+            resetGame()
+        }
 
         playerButton = findViewById(R.id.playerMove)
 
-        if(intent.getIntExtra(EXTRA_MESSAGE, R.string.twoPlayerMode) == R.string.twoPlayerMode){
-
-            gameMode = TwoPlayerMode(playerOneTurn, playerButton,
-                    resources.getColor(android.R.color.holo_orange_light), resources.getColor(android.R.color.holo_blue_light),
-                    resources.getColor(android.R.color.holo_orange_dark), resources.getColor(android.R.color.holo_blue_dark) )
-
-        }
-        else {
-
-            gameMode = SinglePlayerMode(playerOneTurn, playerButton,
-                    resources.getColor(android.R.color.holo_orange_light), resources.getColor(android.R.color.holo_blue_light),
-                    resources.getColor(android.R.color.holo_orange_dark), resources.getColor(android.R.color.holo_blue_dark),
-                    gameBoard )
-
-        }
-
-        resetButton.setOnClickListener {
-            resetBoard()
-        }
-
+        presenterImpl = PresenterImpl(playerButton, gameBoard, this)
     }
 
-    private fun resetBoard() {
+    override fun onClick(v: View?) {
+        val winner = presenterImpl.onClick(v as Button, this)
 
-        for(row : ArrayList<Button> in gameBoard){
-
-            for (buttonPosition : Button in row){
-
-                buttonPosition.setBackgroundColor(resources.getColor(android.R.color.black))
-
+        when (winner){
+            PlayerOne -> {
+                showWinner("Player One")
             }
 
+            PlayerTwo -> {
+                showWinner("Player Two")
+            }
+
+            R.string.resultTie -> {
+                showTie()
+            }
         }
-
-        if(gameMode is SinglePlayerMode){
-
-            (gameMode as SinglePlayerMode).resetAvailablePosition(gameBoard)
-
-        }
-
-        gameMode.playerOneMoves = 0
-        gameMode.playerTwoMoves = 0
-        gameMode.playerOneTurn = true
-
     }
 
-    override fun onClick(v: View) {
-
-        if(checkForAvailableSpace(v as Button)){
-
-            gameMode.playerMove(v)
-
-        }
-
-        checkWinConditions()
-
-    }
-
-    private fun checkForAvailableSpace(button: Button): Boolean {
-
-        return button.background.equals( resources.getColor( android.R.color.black ) )
-
-    }
-
-    private fun checkWinConditions() {
-
-        if (gameMode.playerOneMoves >= 3) {
-
-            checkGameForWin(PlayerOne)
-
-        }
-
-        if (gameMode.playerTwoMoves >= 3) {
-
-            checkGameForWin(PlayerTwo)
-
-        }
-
-        if (gameMode.playerOneMoves + gameMode.playerTwoMoves >= MaxNUmberOfMoves) {
-
-            displayTie()
-
-        }
-
-    }
-
-    private fun checkGameForWin(player: Int) {
-
-        if (checkCols(player) || checkRows(player) || checkDiagonal(player)) {
-
-            displayWinner(player)
-
-        }
-
-    }
-
-    private fun displayWinner(winner: Int) {
-
+    private fun showWinner(winner : String){
         AlertDialog.Builder(this)
-                .setMessage(winner.toString() + " is the Winner!")
-                .setPositiveButton("Reset"
-                ) { _, _ -> resetBoard() }
-                .create()
-                .show()
-
+                .setMessage("The winner is: $winner")
+                .setPositiveButton("Play Again?") { _, _ ->  resetGame()}
+                .create().show()
     }
 
-    private fun displayTie() {
-
+    private fun showTie(){
         AlertDialog.Builder(this)
-                .setMessage("It's A Tie!!")
-                .setPositiveButton("Reset"
-                ) { _, _ -> resetBoard() }
-                .create()
-                .show()
-
+                .setMessage("The game is a Tie!")
+                .setPositiveButton("Play Again?") { _, _ ->  resetGame()}
+                .create().show()
     }
 
-    private fun checkCols(player: Int): Boolean {
-
-        var correctMoves = 0
-        var i = 0
-        var gameBoardIsNotChecked = true
-
-        while (gameBoardIsNotChecked) {
-
-            var rowCounter = 0
-            var columnCounter = 0
-
-            for (Row in gameBoard) {
-
-                if (player.equals((Row[columnCounter].background as ColorDrawable).color)) {
-
-                    correctMoves++
-
-                }
-
-                rowCounter++
-
-                if (correctMoves >= 3) {
-
-                    return true
-
-                }
-
+    fun resetGame() {
+        for (Row in gameBoard){
+            for (button in Row){
+                button.setBackgroundColor(resources.getColor(android.R.color.black))
             }
-
-            i++
-
-            correctMoves = 0
-
-            if (rowCounter == 2) {
-
-                rowCounter = 0
-
-                columnCounter++
-
-            }
-
-            if (i >= 3) {
-
-                gameBoardIsNotChecked = false
-
-            }
-
         }
-
-        return false
-
+        presenterImpl.playerOneMoves = 0
+        presenterImpl.playerTwoMoves = 0
     }
-
-    private fun checkRows(player: Int): Boolean {
-
-        var correctPosition: Int
-
-        for (row in gameBoard) {
-
-            correctPosition = 0
-
-            for (position in row) {
-
-                if (player == (position.background as ColorDrawable).color) {
-
-                    correctPosition++
-
-                }
-
-            }
-
-            if (correctPosition >= 3) {
-
-                return true
-            }
-
-        }
-
-        return false
-
-    }
-
-    private fun checkDiagonal(player: Int): Boolean {
-
-        var i = 0
-        var correctMoves = 0
-
-        for (row in gameBoard) {
-
-            if (player == (row[i].background as ColorDrawable).color) {
-
-                correctMoves++
-
-            }
-
-            i++
-
-            if (correctMoves >= 3) {
-
-                return true
-            }
-
-        }
-
-        correctMoves = 0
-
-        i = 2
-
-        for (row in gameBoard) {
-
-            if (player == (row[i].background as ColorDrawable).color) {
-
-                correctMoves++
-
-            }
-
-            i--
-
-            if (correctMoves >= 3) {
-
-                return true
-
-            }
-
-        }
-
-        return false
-
-    }
-
-
 }

@@ -13,12 +13,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.List;
 
 public class SearchMovieActivity extends AppCompatActivity implements SearchMovieView, RecyclerTouchListener {
 
-    TextInputEditText searchBar;
+    EditText searchBar;
     private MoviesAdapter mAdapter;
     private List<Movie> movies;
     private SearchMoviePresenterImpl presenter;
@@ -46,7 +47,7 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (searchButton.getText().toString().equals("")){
+                if (!searchBar.getText().toString().equals("")){
                     String message = searchBar.getText().toString();
                     presenter.getMovie(message);
                 }
